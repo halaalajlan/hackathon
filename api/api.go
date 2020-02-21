@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	log "github.com/halaalajlan/hackathon/logger"
 	"github.com/halaalajlan/hackathon/models"
 
@@ -37,8 +39,15 @@ func (as *Server) Login(w http.ResponseWriter, r *http.Request) {
 func (as *Server) Patients(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-
-	case "POST":
+		vars := mux.Vars(r) //get id in the url /api/patient/123455
+		id, _ := strconv.Atoi(vars["id"])
+		md, err := models.GetPatientRecord(id)
+		if err != nil {
+			log.Error(err)
+			JSONResponse(w, models.Response{Success: false, Message: err.Error()}, http.StatusNotFound)
+			return
+		}
+		JSONResponse(w, md, http.StatusOK)
 
 	}
 }

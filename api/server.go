@@ -53,7 +53,7 @@ func (as *Server) registerRoutes() {
 	router.HandleFunc("/login", as.LoginUI)
 	router.HandleFunc("/home", mid.Use(as.Base, mid.RequireLogin))
 
-	router.HandleFunc("/api/patient", as.Patients)
+	router.HandleFunc("/api/patient/{id:[0-9]+}", as.Patients)
 	handler := handlers.CombinedLoggingHandler(log.Writer(), router)
 	as.server.Handler = handler
 }

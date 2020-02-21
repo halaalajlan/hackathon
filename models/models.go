@@ -36,14 +36,14 @@ type Hospital struct {
 }
 
 type Medical_Record struct {
-	Id                  int64 ` gorm:"column:id; primary_key:yes"`
-	diabetic            string
-	High_Blood_Pressure string
-	cholestrol          string
-	heart_dieases       string
-	asthma              string
-	Allergic_disease    string
-	Id_Patent           int64
+	Id                  int64  ` gorm:"column:id; primary_key:yes"`
+	Diabetic            string `gorm:"column:diabetic`
+	High_Blood_Pressure string `gorm:"column:high_blood_pressure`
+	Cholestrol          string `gorm:"column:cholestrol`
+	Heart_dieases       string `gorm:"column:heart_dieases`
+	Asthma              string `gorm:"column:asthma`
+	Allergic_disease    string `gorm:"column:allergic_disease`
+	Id_Patent           int    `gorm:"column:id_patent`
 }
 
 type Patient struct {
@@ -89,6 +89,12 @@ func SetUp() error {
 	db.DB().SetMaxOpenConns(1)
 	return nil
 
+}
+
+func GetPatientRecord(id int) (Medical_Record, error) {
+	md := Medical_Record{}
+	err := db.Table("Medical_Record").Where("Id_Patent=?", id).Find(&md).Error
+	return md, err
 }
 
 // GetUserByUsername returns the user that the given username corresponds to. If no user is found, an
