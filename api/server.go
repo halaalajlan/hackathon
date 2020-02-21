@@ -48,9 +48,10 @@ func (as *Server) registerRoutes() {
 	router.StrictSlash(false)
 	router.Use(mid.GetContext)
 	router.Use(mid.RequireAPIKey)
+	router.HandleFunc("/", mid.Use(as.Base, mid.RequireLogin)) //redirect user to home page
 	router.HandleFunc("/api/login", as.Login)
 	router.HandleFunc("/login", as.LoginUI)
-	router.HandleFunc("/home", as.Base)
+	router.HandleFunc("/home", mid.Use(as.Base, mid.RequireLogin))
 
 	router.HandleFunc("/api/patient", as.Patients)
 	handler := handlers.CombinedLoggingHandler(log.Writer(), router)

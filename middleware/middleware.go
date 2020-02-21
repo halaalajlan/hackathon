@@ -15,6 +15,16 @@ var APIKeyEx = []string{
 	"/api/login",
 	"/login",
 	"/home",
+	"/",
+}
+
+// Use allows us to stack middleware to process the request
+// Example taken from https://github.com/gorilla/mux/pull/36#issuecomment-25849172
+func Use(handler http.HandlerFunc, mid ...func(http.Handler) http.HandlerFunc) http.HandlerFunc {
+	for _, m := range mid {
+		handler = m(handler)
+	}
+	return handler
 }
 
 // RequireAPIKey ensures that a valid API key is set as either the api_key GET
@@ -91,6 +101,21 @@ func GetContext(handler http.Handler) http.Handler {
 		// Remove context contents
 		ctx.Clear(r)
 	})
+}
+
+// RequireLogin checks to see if the user is currently logged in.
+// If not, the function returns a 302 redirect to the login page.
+func RequireLogin(handler http.Handler) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if u := ctx.Get(r, "user"); u != nil {
+			handler.ServeHTTP(w, r)
+			return
+		}
+		q := r.URL.Query()
+		q.Set("next", r.URL.Path)
+		http.Redirect(w, r, fmt.Sprintf("/login?%s", q.Encode()), http.StatusTemporaryRedirect)
+		return
+	}
 }
 
 // JSONError returns an error in JSON format with the given
