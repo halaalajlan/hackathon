@@ -50,6 +50,8 @@ func (as *Server) registerRoutes() {
 	router.Use(mid.RequireAPIKey)
 	router.HandleFunc("/api/login", as.Login)
 	router.HandleFunc("/login", as.LoginUI)
+	router.HandleFunc("/home", as.Base)
+
 	router.HandleFunc("/api/patient", as.Patients)
 	handler := handlers.CombinedLoggingHandler(log.Writer(), router)
 	as.server.Handler = handler
@@ -106,6 +108,16 @@ func (as *Server) LoginUI(w http.ResponseWriter, r *http.Request) {
 			template.Must(templates, err).ExecuteTemplate(w, "base", params)
 		}
 	}
+}
+
+// Base handles the default path and template execution
+func (as *Server) Base(w http.ResponseWriter, r *http.Request) {
+	templates := template.New("template")
+	_, err := templates.ParseFiles("templates/index.html", "templates/flashes.html", "templates/header.html")
+	if err != nil {
+		log.Error(err)
+	}
+	template.Must(templates, err).ExecuteTemplate(w, "base", nil)
 }
 
 // Flash handles the rendering flash messages

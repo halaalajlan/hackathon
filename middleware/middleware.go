@@ -14,6 +14,7 @@ import (
 var APIKeyEx = []string{
 	"/api/login",
 	"/login",
+	"/home",
 }
 
 // RequireAPIKey ensures that a valid API key is set as either the api_key GET
