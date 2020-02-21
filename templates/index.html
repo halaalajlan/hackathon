@@ -1,0 +1,90 @@
+{{define "base"}}
+{{template "header" .}}
+
+
+<!-- Main content -->
+<div class="container" style="padding: 10% 0%;">
+    <div class="row justify-content-md-center ">
+        <div class="col-md-10">
+            <form class="form-inline justify-content-center" style="padding-bottom: 5%">
+                <label for="input_id_patent">Enter Patent ID</label>
+                <input type="text" id="input_id_patent" class="form-control mx-sm-3">
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                        <button type="submit" class="btn btn-info">Search</button>
+                    </div>
+            </form>
+            <!-- TABLE -->
+            <table id="myTable" class="cell-border display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID_Med</th>
+                        <th>Diabetic</th>
+                        <th>High Blood Pressure</th>
+                        <th>Cholestrol</th>
+                        <th>Heart Disease</th>
+                        <th>Asthma</th>
+                        <th>Allergic</th>
+                        <th>Patent ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Row 1 Data 1</td>
+                        <td>Row 1 Data 2</td>
+                        <td>Row 1 Data 3</td>
+                        <td>Row 1 Data 4</td>
+                        <td>Row 1 Data 5</td>
+                        <td>Row 1 Data 6</td>
+                        <td>Row 1 Data 7</td>
+                        <td>Row 1 Data 8</td>
+                    </tr>
+                    <tr>
+                        <td>Row 2 Data 1</td>
+                        <td>Row 2 Data 2</td>
+                        <td>Row 2 Data 3</td>
+                        <td>Row 2 Data 4</td>
+                        <td>Row 2 Data 5</td>
+                        <td>Row 2 Data 6</td>
+                        <td>Row 2 Data 7</td>
+                        <td>Row 2 Data 8</td>
+                    </tr>
+                    <tr>
+                        <td>Row 3 Data 1</td>
+                        <td>Row 3 Data 2</td>
+                        <td>Row 3 Data 3</td>
+                        <td>Row 3 Data 4</td>
+                        <td>Row 3 Data 5</td>
+                        <td>Row 3 Data 6</td>
+                        <td>Row 3 Data 7</td>
+                        <td>Row 3 Data 8</td>
+                    </tr>
+                    <tr>
+                        <td>Row 4 Data 1</td>
+                        <td>Row 4 Data 2</td>
+                        <td>Row 4 Data 3</td>
+                        <td>Row 4 Data 4</td>
+                        <td>Row 4 Data 5</td>
+                        <td>Row 4 Data 6</td>
+                        <td>Row 4 Data 7</td>
+                        <td>Row 4 Data 8</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> <!-- End of container -->
+
+
+
+
+<script>
+
+    $(document).ready(function() {
+$('#myTable').DataTable( {
+    "scrollX": true
+} );
+} );
+</script>
+
+</body>
+{{end}}
