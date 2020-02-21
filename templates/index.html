@@ -9,7 +9,7 @@
                 <label for="input_id_patent">Enter Patent ID</label>
                 <input type="text" id="input_id_patent" class="form-control mx-sm-3">
                     <div style="display: flex; justify-content: center; align-items: center;">
-                        <button type="submit" class="btn btn-info">Search</button>
+                        <button id="mybutton" type="submit" class="btn btn-info">Search</button>
                     </div>
             </form>
             <!-- TABLE -->
@@ -77,12 +77,32 @@
 
 
 <script>
+ 
 
     $(document).ready(function() {
 $('#myTable').DataTable( {
     "scrollX": true
 } );
+
+$('#mybutton').on("click", function(){
+
+     id=$("#input_id_patent").val(),
+        data =$.ajax({
+            
+        url: "/api/patient/"+id,
+        async: false,
+        method: "GET",
+        dataType:"JSON",
+        contentType: "application/json",
+        // beforeSend: function (xhr) {
+        //     xhr.setRequestHeader('Authorization', 'Bearer ' + user.api_key);
+        // }
+    })
+
+})
 } );
+
+ 
 </script>
 
 </body>
