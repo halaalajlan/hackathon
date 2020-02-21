@@ -45,6 +45,7 @@ func (as *Server) Shutdown() error {
 
 func (as *Server) registerRoutes() {
 	router := mux.NewRouter()
+	router.StrictSlash(false)
 	router.Use(mid.GetContext)
 	router.Use(mid.RequireAPIKey)
 	router.HandleFunc("/api/login", as.Login)
