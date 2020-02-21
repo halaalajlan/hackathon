@@ -24,43 +24,45 @@ type Flash struct {
 }
 
 type Hospital struct {
-    ID_Hosptial int64
-    name_hospital string 
-    api_Key int64
-    city  string
-    Address_H  string
-    phone  int64 
-    Email_Admin string
+	Id            int64 `gorm:"column:id; primary_key:yes"`
+	name_hospital string
+	api_Key       int64
+	city          string
+	Address_H     string
+	phone         int64
+	Email_Admin   string
+	Hash          string
+	ApiKey        string `json:"api_key" sql:"not null;unique"`
 }
 
 type Medical_Record struct {
-	ID_Med   int64  
-    diabetic string 
-    High_Blood_Pressure string
-    cholestrol string 
-    heart_dieases string
-    asthma string
-    Allergic_disease string
-    Id_Patent int64  
+	Id                  int64 ` gorm:"column:id; primary_key:yes"`
+	diabetic            string
+	High_Blood_Pressure string
+	cholestrol          string
+	heart_dieases       string
+	asthma              string
+	Allergic_disease    string
+	Id_Patent           int64
 }
 
 type Patient struct {
-	Id_Patent  int64 
-    Fname    string 
-    Lname   string
-    Birthday   time.Time
-    typeOfBlood  string
-    api_Key   int64 
-    gander    string
-    Phone_number int64 
-    home_address string
+	Id           int64 `json:"id" gorm:"column:id; primary_key:yes"`
+	Fname        string
+	Lname        string
+	Birthday     time.Time
+	typeOfBlood  string
+	api_Key      int64
+	gander       string
+	Phone_number int64
+	home_address string
 }
 
 type Pat_Hospital struct {
-	Id_Patent int64
-    ID_Hosptial int64
-    Last_Visit_Date time.Time
-    ReasonForVisit string
+	Id_Patent       int64
+	ID_Hosptial     int64
+	Last_Visit_Date time.Time
+	ReasonForVisit  string
 }
 
 func SetUp() error {
@@ -109,6 +111,6 @@ func GetUserByAPIKey(username string) (Hospital, error) {
 // error is thrown.
 func GetUser(id int64) (Hospital, error) {
 	u := Hospital{}
-	err := db.Table("Hospital").Where("ID_Hosptial=?", id).First(&u).Error
+	err := db.Table("Hospital").Where("id=?", id).First(&u).Error
 	return u, err
 }
