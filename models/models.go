@@ -24,10 +24,43 @@ type Flash struct {
 }
 
 type Hospital struct {
-	Id       int64  `json:"id"`
-	Username string `json:"username" sql:"not null;unique"`
-	Hash     string `json:"-"`
-	ApiKey   string `json:"api_key" sql:"not null;unique"`
+    ID_Hosptial int64
+    name_hospital string 
+    api_Key int64
+    city  string
+    Address_H  string
+    phone  int64 
+    Email_Admin string
+}
+
+type Medical_Record struct {
+	ID_Med   int64  
+    diabetic string 
+    High_Blood_Pressure string
+    cholestrol string 
+    heart_dieases string
+    asthma string
+    Allergic_disease string
+    Id_Patent int64  
+}
+
+type Patient struct {
+	Id_Patent  int64 
+    Fname    string 
+    Lname   string
+    Birthday   time.Time
+    typeOfBlood  string
+    api_Key   int64 
+    gander    string
+    Phone_number int64 
+    home_address string
+}
+
+type Pat_Hospital struct {
+	Id_Patent int64
+    ID_Hosptial int64
+    Last_Visit_Date time.Time
+    ReasonForVisit string
 }
 
 func SetUp() error {
