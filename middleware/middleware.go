@@ -6,13 +6,14 @@ import (
 	"net/http"
 	"strings"
 
-	ctx "github.com/gophish/gophish/context"
+	ctx "github.com/halaalajlan/hackathon/context"
 
-	"github.com/halaalajlan/gophish/models"
+	"github.com/halaalajlan/hackathon/models"
 )
 
 var APIKeyEx = []string{
 	"/api/login",
+	"/login",
 }
 
 // RequireAPIKey ensures that a valid API key is set as either the api_key GET
@@ -56,6 +57,38 @@ func RequireAPIKey(handler http.Handler) http.Handler {
 		r = ctx.Set(r, "user_id", u.Id)
 		r = ctx.Set(r, "api_key", ak)
 		handler.ServeHTTP(w, r)
+	})
+}
+
+// GetContext wraps each request in a function which fills in the context for a given request.
+// This includes setting the User and Session keys and values as necessary for use in later functions.
+func GetContext(handler http.Handler) http.Handler {
+	// Set the context here
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Parse the request form
+		err := r.ParseForm()
+		if err != nil {
+			http.Error(w, "Error parsing request", http.StatusInternalServerError)
+		}
+		// Set the context appropriately here.
+		// Set the session
+		session, _ := Store.Get(r, "session")
+		// Put the session in the context so that we can
+		// reuse the values in different handlers
+		r = ctx.Set(r, "session", session)
+		if id, ok := session.Values["id"]; ok {
+			u, err := models.GetUser(id.(int64))
+			if err != nil {
+				r = ctx.Set(r, "user", nil)
+			} else {
+				r = ctx.Set(r, "user", u)
+			}
+		} else {
+			r = ctx.Set(r, "user", nil)
+		}
+		handler.ServeHTTP(w, r)
+		// Remove context contents
+		ctx.Clear(r)
 	})
 }
 

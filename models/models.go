@@ -5,6 +5,7 @@ import (
 
 	log "github.com/halaalajlan/hackathon/logger"
 	"github.com/jinzhu/gorm"
+	_ "github.com/mattn/go-sqlite3" // Blank import needed to import sqlite3
 )
 
 var db *gorm.DB
@@ -16,7 +17,13 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
-type User struct {
+// Flash is used to hold flash information for use in templates.
+type Flash struct {
+	Type    string
+	Message string
+}
+
+type Hospital struct {
 	Id       int64  `json:"id"`
 	Username string `json:"username" sql:"not null;unique"`
 	Hash     string `json:"-"`
@@ -33,6 +40,7 @@ func SetUp() error {
 		if err == nil {
 			break
 		}
+		log.Error(err)
 		if err != nil && i >= 10 {
 			log.Error(err)
 			return err
@@ -50,8 +58,24 @@ func SetUp() error {
 
 // GetUserByUsername returns the user that the given username corresponds to. If no user is found, an
 // error is thrown.
-func GetUserByUsername(username string) (User, error) {
-	u := User{}
-	err := db.Where("username = ?", username).First(&u).Error
+func GetUserByUsername(username string) (Hospital, error) {
+	u := Hospital{}
+	err := db.Table("Hospital").Where("name_hospital = ?", username).First(&u).Error
+	return u, err
+}
+
+// GetUserByUsername returns the user that the given username corresponds to. If no user is found, an
+// error is thrown.
+func GetUserByAPIKey(username string) (Hospital, error) {
+	u := Hospital{}
+	err := db.Table("Hospital").Where("api_Key = ?", username).First(&u).Error
+	return u, err
+}
+
+// GetUser returns the user that the given id corresponds to. If no user is found, an
+// error is thrown.
+func GetUser(id int64) (Hospital, error) {
+	u := Hospital{}
+	err := db.Table("Hospital").Where("ID_Hosptial=?", id).First(&u).Error
 	return u, err
 }
