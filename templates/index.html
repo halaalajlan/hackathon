@@ -26,48 +26,7 @@
                         <th>Patent ID</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Row 1 Data 1</td>
-                        <td>Row 1 Data 2</td>
-                        <td>Row 1 Data 3</td>
-                        <td>Row 1 Data 4</td>
-                        <td>Row 1 Data 5</td>
-                        <td>Row 1 Data 6</td>
-                        <td>Row 1 Data 7</td>
-                        <td>Row 1 Data 8</td>
-                    </tr>
-                    <tr>
-                        <td>Row 2 Data 1</td>
-                        <td>Row 2 Data 2</td>
-                        <td>Row 2 Data 3</td>
-                        <td>Row 2 Data 4</td>
-                        <td>Row 2 Data 5</td>
-                        <td>Row 2 Data 6</td>
-                        <td>Row 2 Data 7</td>
-                        <td>Row 2 Data 8</td>
-                    </tr>
-                    <tr>
-                        <td>Row 3 Data 1</td>
-                        <td>Row 3 Data 2</td>
-                        <td>Row 3 Data 3</td>
-                        <td>Row 3 Data 4</td>
-                        <td>Row 3 Data 5</td>
-                        <td>Row 3 Data 6</td>
-                        <td>Row 3 Data 7</td>
-                        <td>Row 3 Data 8</td>
-                    </tr>
-                    <tr>
-                        <td>Row 4 Data 1</td>
-                        <td>Row 4 Data 2</td>
-                        <td>Row 4 Data 3</td>
-                        <td>Row 4 Data 4</td>
-                        <td>Row 4 Data 5</td>
-                        <td>Row 4 Data 6</td>
-                        <td>Row 4 Data 7</td>
-                        <td>Row 4 Data 8</td>
-                    </tr>
-                </tbody>
+               
             </table>
         </div>
     </div>
@@ -80,9 +39,9 @@
  
 
     $(document).ready(function() {
-$('#myTable').DataTable( {
-    "scrollX": true
-} );
+// $('#myTable').DataTable( {
+//     "scrollX": true
+// } );
 
 $('#mybutton').on("click", function(){
 
@@ -95,24 +54,98 @@ $('#mybutton').on("click", function(){
         method: "GET",
         dataType: 'JSON',
         contentType: "application/json",
-        success:function (record) {
+        success:function (record) {//here is the succeess function / it will fire when we got a success message from server -> if we got the results of the patient
            //here you should fill the table with the data
            //table in lin 83 should be deleted and instead create
            //the table here with the data you recived from server
-        },
-        error:function (data) {
+//            var recoTable = $("myTable")
+//  recoTable.DataTable ({
+// "data":  record,
+//  "Columns"   :[
+
+// {  "data"   :   "Id"  },
+// {  "data"   :   "Diabetic"  },
+// {  "data"   :   "High_Blood_Pressure"  },
+// {  "data"   :   "Cholestrol"  },
+// {  "data"   :   "Heart_dieases"  },
+//  {  "data"   :   "Asthma"  },
+//  {  "data"   :   "Allergic_disease"  },
+// {  "data"   :   "Id_Patent"  }]
+// })
+
+
+var recordTable = $("#myTable").DataTable({
+                    destroy: true,
+                    columnDefs: [{
+                        orderable: false,
+                        targets: "no-sort"
+                    }]
+                });
+                recordTable.clear();
+                recordTable.row.add([
+                    record.Id,
+                    record.Diabetic,
+                    record.High_Blood_Pressure,
+                    record.Cholestrol,
+                    record.Heart_dieases,
+                    record.Asthma,
+                    record.Allergic_disease,
+                    record.Id_Patent,
+                    ]).draw()
+        }
+        ,//end of success function
+        
+        error:function (data) {//error function will fire when there is an error -> no patient found
           console.log(data.message)
         }
 
     })
     
         
-   
+        
 
-})
+}
+
+
+//this is your code
+//please write it now in the right place
+// Var recoTable = $("myTable")
+// recoTable.DataTable ({
+// "data":  :record,
+// "Columns"   :[
+
+// {  "data"   :   "Id"  },
+// {  "data"   :   "Diabetic"  },
+// {  "data"   :   "High_Blood_Pressure"  },
+// {  "data"   :   "Cholestrol"  },
+// {  "data"   :   "Heart_dieases"  },
+// {  "data"   :   "Asthma"  },
+// {  "data"   :   "Allergic_disease"  },
+// {  "data"   :   "Id_Patent"  },
+
+
+//         }),//end of table
+
+// //
+//where is record defined?
+//outside success function there is no varible named record, it is only there
+//if you try to use it outside success function it will give you an error
+//it is function scope varible
+//did you get it?
+// var recoTable = $("myTable")
+// recoTable.DataTable ({
+
+
+// })
+
+
+
+)
 } );
 
- 
+ //you can check your changes this way
+ //check left side -> this was working with no errors
+
 </script>
 
 </body>
