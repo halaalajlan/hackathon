@@ -9,7 +9,7 @@
                 <label for="input_id_patent">Enter Patent ID</label>
                 <input type="text" id="input_id_patent" class="form-control mx-sm-3">
                     <div style="display: flex; justify-content: center; align-items: center;">
-                        <button id="mybutton" type="submit" class="btn btn-info">Search</button>
+                        <button id="mybutton" type="button" class="btn btn-info">Search</button>
                     </div>
             </form>
             <!-- TABLE -->
@@ -87,17 +87,27 @@ $('#myTable').DataTable( {
 $('#mybutton').on("click", function(){
 
      id=$("#input_id_patent").val(),
-        data =$.ajax({
+
+        request =$.ajax({
             
         url: "/api/patient/"+id,
         async: false,
         method: "GET",
-        dataType:"JSON",
+        dataType: 'JSON',
         contentType: "application/json",
-        // beforeSend: function (xhr) {
-        //     xhr.setRequestHeader('Authorization', 'Bearer ' + user.api_key);
-        // }
+        success:function (record) {
+           //here you should fill the table with the data
+           //table in lin 83 should be deleted and instead create
+           //the table here with the data you recived from server
+        },
+        error:function (data) {
+          console.log(data.message)
+        }
+
     })
+    
+        
+   
 
 })
 } );
